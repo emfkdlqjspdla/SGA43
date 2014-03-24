@@ -6,6 +6,8 @@
 #include <fstream>
 #include "utility.h"
 
+#pragma comment(lib, "winmm.lib")
+
 LRESULT CALLBACK MyWndProc(HWND,UINT,WPARAM,LPARAM);
 
 HINSTANCE hMainInst = NULL;
@@ -40,7 +42,7 @@ _tWinMain(HINSTANCE hInst,
 	{
 		DWORD dwError = ::GetLastError();
 
-		//ErrorMessageBox(dwError);
+		ErrorMessageBox(dwError);
 		return 2;
 	}
 
@@ -266,6 +268,11 @@ LRESULT CALLBACK MyWndProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 		// 60s : 360 = 1s : x, x = 360*1/60 = 6
 		theta_s = (st.wSecond)*6;
+
+		if (st.wSecond == 0)
+		{
+			::PlaySound(_T("Bird"), hMainInst, SND_ASYNC | SND_RESOURCE);
+		}
 
 		::InvalidateRect(hWnd, &rc, TRUE);
 	}
