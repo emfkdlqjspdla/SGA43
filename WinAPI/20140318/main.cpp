@@ -2,28 +2,43 @@
 #include <conio.h>
 #include <tchar.h>
 #include <cmath>
+#include <list>
+#include <fstream>
 
 using namespace std;
 
+struct ItemInfo
+{
+	char* name[20];
+	int price;
+};
+
 int main(void)
 {
-/*
-sin(theta_rad) = value
-theta_rad = asin(value)
+	//ItemInfo item;
 
-sin(pi/2) = 1
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	cout << "name : ";
+	//	cin >> item.name;
+	//	cout << "price : ";
+	//	cin >> item.price;
 
-pi/2 = asin(1)
-pi = 2*asin(1)
+	//	// write to file
+	//}
 
-*/
-	float pi = 2.f*asin(1.f);
-	float D2R = pi/180.f;
+	// read from file.
 
-	for (int i = 0; i <= 360; i++)
-	{
-		cout << "cos(" << i << ") = " << cos(i*1.0f*D2R) << endl;
-	}
+
+	fstream file;
+
+	file.open("data.dat", ios_base::out | ios_base::binary);
+
+	int a = 11;
+
+	file.write((char*)&a, sizeof(int));
+
+	file.close();
 
 	_getch();
 	return 0;
