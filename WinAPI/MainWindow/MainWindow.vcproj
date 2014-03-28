@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="20140328"
-	ProjectGUID="{3DA41634-317E-471A-A9B9-2CD12D6B8E0D}"
-	RootNamespace="My20140328"
+	Name="MainWindow"
+	ProjectGUID="{490E809F-C94B-4B0C-B676-824CFBD59D0A}"
+	RootNamespace="MainWindow"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>

@@ -173,6 +173,14 @@
 			<File
 				RelativePath=".\main.cpp"
 				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\main_class_function_pointer.cpp"
@@ -188,6 +196,18 @@
 			</File>
 			<File
 				RelativePath=".\main_hw_solve.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\main_map.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
