@@ -119,6 +119,12 @@ protected :
 			eventmap.insert(std::make_pair(msg, act));
 		}
 	}
+	void Invalidate(BOOL bErase = TRUE)
+	{
+		RECT rc;
+		::GetClientRect(hMainWnd, &rc);
+		::InvalidateRect(hMainWnd, &rc, bErase);
+	}
 
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{

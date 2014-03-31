@@ -1,5 +1,6 @@
 #pragma once
 
+#include <windowsx.h>
 #include "..\MainWindow\MainWindow.h"
 
 class CannonApp : public MainWindow<CannonApp>
@@ -14,6 +15,7 @@ protected :
 
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_PAINT, &Me::OnPaint);
+		AddEventHandler(WM_MOUSEMOVE, &Me::OnMouseMove);
 	}
 	LRESULT OnCreate(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
@@ -42,6 +44,17 @@ protected :
 
 		return 0;
 	}
+	LRESULT OnMouseMove(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		ptMouse.x = GET_X_LPARAM(lParam);
+		ptMouse.y = GET_Y_LPARAM(lParam);
+
+		Invalidate();
+
+		return 0;
+	}
+
 private :
 	HBITMAP hBitmap;
+	POINT ptMouse;
 };
