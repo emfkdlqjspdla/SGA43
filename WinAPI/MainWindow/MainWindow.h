@@ -148,6 +148,7 @@ protected :
 
 			pWin = reinterpret_cast<MainWindow*>(lpcs->lpCreateParams);
 
+			// for 64bit compatible : LONG => PtrToUlong
 			::SetWindowLongPtr(hWnd, GWLP_USERDATA, PtrToUlong(pWin));
 
 			return pWin->EventHandler(hWnd,uMsg,wParam,lParam);
