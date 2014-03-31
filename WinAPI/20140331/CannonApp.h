@@ -11,6 +11,10 @@ public :
 protected :
 	void SetEventMap()
 	{
+		// for WM_DESTROY event handle
+		// if you want to redefine WM_DESTROY event handler,
+		// do not call Base::SetEventMap(), and then call AddEventHandler(WM_DESTROY, &Me::SomeHandler);
+		// also, SomeHandler member function must have declared.
 		Base::SetEventMap();
 
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
