@@ -129,6 +129,7 @@ protected :
 
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		// Post WM_QUIT message to thread's message queue.
 		::PostQuitMessage(0);
 		return 0;
 	}
@@ -147,7 +148,7 @@ protected :
 
 			pWin = reinterpret_cast<MainWindow*>(lpcs->lpCreateParams);
 
-			::SetWindowLongPtr(hWnd, GWLP_USERDATA, LONG(pWin));
+			::SetWindowLongPtr(hWnd, GWLP_USERDATA, PtrToUlong(pWin));
 
 			return pWin->EventHandler(hWnd,uMsg,wParam,lParam);
 		}
