@@ -119,6 +119,7 @@ protected :
 			eventmap.insert(std::make_pair(msg, act));
 		}
 	}
+	// do update entire client screen.
 	void Invalidate(BOOL bErase = TRUE)
 	{
 		RECT rc;
