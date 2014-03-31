@@ -11,9 +11,10 @@ public :
 protected :
 	void SetEventMap()
 	{
-		Base::SetEventMap();
+		//Base::SetEventMap();
 
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
+		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
 		AddEventHandler(WM_PAINT, &Me::OnPaint);
 		AddEventHandler(WM_MOUSEMOVE, &Me::OnMouseMove);
 	}
@@ -21,6 +22,11 @@ protected :
 	{
 		hBitmap = (HBITMAP)::LoadImage(NULL, _T("circle.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
 
+		return 0;
+	}
+	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		::PostQuitMessage(0);
 		return 0;
 	}
 	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
