@@ -7,7 +7,8 @@
 //
 // TEXTINCLUDE 2 리소스에서 생성되었습니다.
 //
-#include "afxres.h"
+//#include "afxres.h"
+#include <windows.h> // afxres.h is for MFC. express version Visual Studio do not have MFC.
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
