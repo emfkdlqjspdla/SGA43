@@ -30,6 +30,8 @@ protected :
 	}
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		// delete loaded bitmap handle.
+		::DeleteObject(hBitmap);
 		::PostQuitMessage(0);
 		return 0;
 	}
