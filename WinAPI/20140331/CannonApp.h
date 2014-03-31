@@ -46,7 +46,7 @@ protected :
 		HDC hMemDC = ::CreateCompatibleDC(hdc);
 		::SelectObject(hMemDC, hBitmap);
 
-		::BitBlt(hdc, 0, 0, rc.right-rc.left, rc.bottom-rc.top,
+		::BitBlt(hdc, ptMouse.x, ptMouse.y, rc.right-rc.left, rc.bottom-rc.top,
 			hMemDC, 0, 0, SRCCOPY);
 
 
