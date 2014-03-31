@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <tchar.h>
 #include <map>
+#include "BaseType.h"
 
 template<typename ReturnType, typename Class, typename FunctionPointer>
 class Callable
