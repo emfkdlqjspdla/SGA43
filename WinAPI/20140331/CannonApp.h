@@ -9,7 +9,7 @@ class CannonApp : public MainWindow<CannonApp>
 	typedef MainWindow<CannonApp> Base;
 public :
 	CannonApp()
-		: bMouseClipped(false)
+		: bMouseClipped(false), ptMouse(300,300)
 	{
 	}
 protected :
@@ -86,10 +86,13 @@ protected :
 	}
 	LRESULT OnMouseMove(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-		ptMouse.x = GET_X_LPARAM(lParam);
-		ptMouse.y = GET_Y_LPARAM(lParam);
+		if (bMouseClipped)
+		{
+			ptMouse.x = GET_X_LPARAM(lParam);
+			ptMouse.y = GET_Y_LPARAM(lParam);
 
-		Invalidate();
+			Invalidate();
+		}
 
 		return 0;
 	}
@@ -133,7 +136,7 @@ protected :
 
 private :
 	HBITMAP hBitmap;
-	POINT ptMouse;
+	Point ptMouse;
 	SIZE cBitmap;
 	bool bMouseClipped;
 };
