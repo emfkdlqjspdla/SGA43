@@ -43,6 +43,14 @@ struct Rect : public RECT
 	{
 		return Point(right, bottom);
 	}
+	const LONG width() const
+	{
+		return (right - left);
+	}
+	const LONG height() const
+	{
+		return (bottom - top);
+	}
 };
 
 struct Size : public SIZE
