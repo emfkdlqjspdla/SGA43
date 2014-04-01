@@ -15,6 +15,15 @@ struct Point : public POINT
 	}
 };
 
+struct Size : public SIZE
+{
+	Size(const LONG& _cx = 0, const LONG& _cy = 0)
+	{
+		cx = _cx;
+		cy = _cy;
+	}
+};
+
 struct Rect : public RECT
 {
 	Rect()
@@ -51,13 +60,15 @@ struct Rect : public RECT
 	{
 		return (bottom - top);
 	}
-};
-
-struct Size : public SIZE
-{
-	Size(const LONG& _cx = 0, const LONG& _cy = 0)
+	Rect operator << (const Size& diff)
 	{
-		cx = _cx;
-		cy = _cy;
+		return Rect(left - diff.cx, top - diff.cy,
+			right - diff.cx, bottom - diff.cy);
+	}
+	Rect operator >> (const Size& diff)
+	{
+		return Rect(left + diff.cx, top + diff.cy,
+			right + diff.cx, bottom + diff.cy);
 	}
 };
+
