@@ -66,10 +66,15 @@ protected :
 		PAINTSTRUCT ps;
 		HDC hdc = ::BeginPaint(hWnd, &ps);
 
+		//HDC hMainDC = ::GetDC(hWnd);
+		//::ReleaseDC(hWnd, hMainDC);
+
 		HDC hMemDC = ::CreateCompatibleDC(hdc);
 		::SelectObject(hMemDC, hBitmap);
 
-		::BitBlt(hdc, ptMouse.x - cBitmap.cx/2, ptMouse.y - cBitmap.cy/2, cBitmap.cx, cBitmap.cy,
+		::BitBlt(hdc, ptMouse.x - cBitmap.cx/2, 
+			ptMouse.y - cBitmap.cy/2, 
+			cBitmap.cx, cBitmap.cy,
 			hMemDC, 0, 0, SRCCOPY);
 
 
@@ -103,6 +108,7 @@ protected :
 		{
 			// free mouse.
 			::ClipCursor(NULL);
+			::ShowCursor(TRUE);
 		}
 		else
 		{
@@ -117,6 +123,7 @@ protected :
 
 			// confine cursor in client area.
 			::ClipCursor(&rc);
+			::ShowCursor(FALSE);
 		}
 
 		bMouseClipped = !bMouseClipped;
