@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\MainWindow\MainWindow.h"
+#include "Circle.h"
 
 class AntiBlinkApp : public MainWindow<AntiBlinkApp>
 {
@@ -35,9 +36,16 @@ protected :
 		hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
 		::SelectObject(hMemDC, hMemBitmap);
 
-		hBgBrush = ::CreateSolidBrush(RGB(0xE0,0xFF,0xFF));
+		hBgBrush = ::CreateSolidBrush(RGB(0xE6,0xE6,0xFA));
 
-		::SetTimer(hWnd, 0, 100, NULL);
+		// 글자 출력시 바탕 투명 처리.
+		::SetBkMode(hMemDC, TRANSPARENT);
+
+		////////////////////////////////////
+		// circle init
+		one.SetData(Point(200, 100), 10);
+
+		::SetTimer(hWnd, 10, 100, NULL);
 		return 0;
 	}
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -48,15 +56,18 @@ protected :
 		::DeleteDC(hMemDC);
 		::ReleaseDC(hWnd, hMainDC);
 
-		::KillTimer(hWnd, 0);
+		::KillTimer(hWnd, 10);
 		::PostQuitMessage(0);
 		return 0;
 	}
 	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		// background
 		::FillRect(hMemDC, &rcClient, hBgBrush);
 
 		::DrawText(hMemDC, _T("Hello World"), -1, &rcClient, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+		one.Draw(hMemDC);
 
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
@@ -64,6 +75,7 @@ protected :
 	}
 	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		one.Update();
 		Invalidate();
 
 		return 0;
@@ -77,4 +89,5 @@ private :
 	HBITMAP hMemBitmap;
 	Rect rcClient;
 	HBRUSH hBgBrush;
+	Circle one;
 };

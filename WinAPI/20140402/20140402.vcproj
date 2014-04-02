@@ -184,6 +184,10 @@
 				RelativePath=".\AntiBlinkApp.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Circle.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="리소스 파일"
