@@ -4,6 +4,7 @@
 #include <tchar.h>
 #include <map>
 #include "BaseType.h"
+#include "utility.h"
 
 template<typename ReturnType, typename Class, typename FunctionPointer>
 class Callable
@@ -38,6 +39,7 @@ class MainWindow
 	typedef typename EventMapType::iterator Handler;
 public :
 	MainWindow()
+		: lpszWindowTitle(NULL)
 	{
 	}
 	~MainWindow()
@@ -81,7 +83,7 @@ public :
 		cy = (cy-500)/2;
 
 		hMainWnd = ::CreateWindowEx(0, lpClassName,
-			_T("Hello World"),
+			((lpszWindowTitle)? lpszWindowTitle : _T("sample")),
 			WS_OVERLAPPEDWINDOW,
 			cx,
 			cy,
@@ -107,6 +109,12 @@ public :
 		return TRUE;
 	}
 protected :
+	void SetWindowTitle(LPCTSTR szTitle)
+	{
+		SafeDelete(lpszWindowTitle);
+		strAlloc(&lpszWindowTitle, szTitle);
+	}
+
 	virtual void SetEventMap()
 	{
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
@@ -183,4 +191,5 @@ protected :
 
 private :
 	EventMapType eventmap;
+	LPTSTR lpszWindowTitle;
 };

@@ -60,7 +60,7 @@ protected :
 	{
 		::DeleteObject(hMemBitmap);
 		::DeleteDC(hMemDC);
-		::ReleaseDC(hMainDC);
+		::ReleaseDC(hWnd, hMainDC);
 
 		// delete loaded bitmap handle.
 		::DeleteObject(bgColor);
