@@ -4,6 +4,7 @@
 #include "Circle.h"
 #include <list>
 #include <cstdlib>
+#include <windowsx.h>
 
 class AntiBlinkApp : public MainWindow<AntiBlinkApp>
 {
@@ -24,6 +25,7 @@ protected :
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
 		//AddEventHandler(WM_PAINT, &Me::OnPaint);
 		//AddEventHandler(WM_TIMER, &Me::OnTimer);
+		AddEventHandler(WM_MOUSEMOVE, &Me::OnMouseMove);
 		AddEventHandler(WM_ERASEBKGND, &Me::OnEraseBkgnd);
 	}
 	LRESULT OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -47,10 +49,15 @@ protected :
 
 		////////////////////////////////////
 		// circle init
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 50; i++)
 		{
-			depot.push_back(new Circle(Point(50 + rand()%300, 100 + rand()%100), 5 + rand()%10));
+			depot.push_back(new Circle(Point(50 + rand()%400, 50 + rand()%300),
+									   15 + rand()%10,
+									   RGB(255, 50 + rand()%200, 100 + rand()%150)));
 		}
+
+		MouseCircle.SetData(Point(0,0), 50);
+		MouseCircle.SetColor(RGB(255,255,255));
 
 		::SetTimer(hWnd, 1, 100, NULL);
 		return 0;
@@ -74,6 +81,12 @@ protected :
 		::PostQuitMessage(0);
 		return 0;
 	}
+	LRESULT OnMouseMove(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		ptMouse.x = GET_X_LPARAM(lParam);
+		ptMouse.y = GET_Y_LPARAM(lParam);
+		return 0;
+	}
 public :
 //	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	void Render(DWORD tick)
@@ -89,6 +102,8 @@ public :
 			(*it)->Draw(hMemDC);
 		}
 
+		MouseCircle.Draw(hMemDC);
+
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
 		//return 0;
@@ -97,18 +112,21 @@ public :
 //	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	void Update(DWORD tick)
 	{
+		MouseCircle << ptMouse;
+
 		if (update_dt > 50)
 		{
 			marble::iterator it;
 			for (it = depot.begin(); it != depot.end(); it++)
 			{
-				(*it)->Update();
+				(*it)->Update(&MouseCircle);
 			}
 
 			update_dt -= 50;
 		}
 		update_dt += tick;
 		//Invalidate();
+
 
 		//return 0;
 	}
@@ -124,4 +142,7 @@ private :
 
 	DWORD update_dt;
 	marble depot;
+
+	Point ptMouse;
+	Circle MouseCircle;
 };
