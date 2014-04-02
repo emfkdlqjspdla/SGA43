@@ -9,8 +9,9 @@ class AntiBlinkApp : public MainWindow<AntiBlinkApp>
 	typedef MainWindow<AntiBlinkApp> Base;
 public :
 	AntiBlinkApp()
+		: update_dt(0)
 	{
-		SetWindowTitle(_T("Anti Blink Sample"));
+		//SetWindowTitle(_T("Anti Blink Sample"));
 	}
 
 protected :
@@ -18,8 +19,8 @@ protected :
 	{
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
-		AddEventHandler(WM_PAINT, &Me::OnPaint);
-		AddEventHandler(WM_TIMER, &Me::OnTimer);
+		//AddEventHandler(WM_PAINT, &Me::OnPaint);
+		//AddEventHandler(WM_TIMER, &Me::OnTimer);
 		AddEventHandler(WM_ERASEBKGND, &Me::OnEraseBkgnd);
 	}
 	LRESULT OnEraseBkgnd(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -45,7 +46,7 @@ protected :
 		// circle init
 		one.SetData(Point(200, 100), 10);
 
-		::SetTimer(hWnd, 10, 100, NULL);
+		::SetTimer(hWnd, 0, 100, NULL);
 		return 0;
 	}
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -56,11 +57,13 @@ protected :
 		::DeleteDC(hMemDC);
 		::ReleaseDC(hWnd, hMainDC);
 
-		::KillTimer(hWnd, 10);
+		::KillTimer(hWnd, 0);
 		::PostQuitMessage(0);
 		return 0;
 	}
-	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+public :
+//	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	void Render(DWORD tick)
 	{
 		// background
 		::FillRect(hMemDC, &rcClient, hBgBrush);
@@ -71,14 +74,22 @@ protected :
 
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
-		return 0;
+		//return 0;
 	}
-	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	{
-		one.Update();
-		Invalidate();
 
-		return 0;
+//	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	void Update(DWORD tick)
+	{
+		if (update_dt > 50)
+		{
+			one.Update();
+
+			update_dt -= 50;
+		}
+		update_dt += tick;
+		//Invalidate();
+
+		//return 0;
 	}
 
 private :
@@ -90,4 +101,6 @@ private :
 	Rect rcClient;
 	HBRUSH hBgBrush;
 	Circle one;
+
+	DWORD update_dt;
 };

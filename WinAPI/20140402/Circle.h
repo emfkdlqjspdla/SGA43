@@ -25,7 +25,7 @@ public :
 
 		if (center.y >= 500)
 		{
-			speed = -speed;
+			speed = -speed - 1;
 		}
 	}
 	void Draw(HDC hdc)
