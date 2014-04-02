@@ -6,6 +6,9 @@
 class Circle
 {
 public :
+	Circle(const Point& c, const LONG& r)
+		: center(c), radius(r), speed(0)
+	{}
 	Circle()
 		: radius(0), speed(0)
 	{
@@ -27,6 +30,14 @@ public :
 		{
 			speed = -speed - 1;
 		}
+
+		if (IsCollide())
+		{
+			center.x += 10;
+		}
+	}
+	bool IsCollide()
+	{
 	}
 	void Draw(HDC hdc)
 	{

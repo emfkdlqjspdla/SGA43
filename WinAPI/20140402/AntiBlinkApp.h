@@ -2,11 +2,14 @@
 
 #include "..\MainWindow\MainWindow.h"
 #include "Circle.h"
+#include <list>
+#include <cstdlib>
 
 class AntiBlinkApp : public MainWindow<AntiBlinkApp>
 {
 	typedef AntiBlinkApp Me;
 	typedef MainWindow<AntiBlinkApp> Base;
+	typedef std::list<Circle*> marble;
 public :
 	AntiBlinkApp()
 		: update_dt(0)
@@ -44,20 +47,30 @@ protected :
 
 		////////////////////////////////////
 		// circle init
-		one.SetData(Point(200, 100), 10);
+		for (int i = 0; i < 10; i++)
+		{
+			depot.push_back(new Circle(Point(50 + rand()%300, 100 + rand()%100), 5 + rand()%10));
+		}
 
-		::SetTimer(hWnd, 0, 100, NULL);
+		::SetTimer(hWnd, 1, 100, NULL);
 		return 0;
 	}
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
+		marble::iterator it;
+		for (it = depot.begin(); it != depot.end();)
+		{
+			delete (*it);
+			it = depot.erase(it);
+		}
+
 		::DeleteObject(hBgBrush);
 
 		::DeleteObject(hMemBitmap);
 		::DeleteDC(hMemDC);
 		::ReleaseDC(hWnd, hMainDC);
 
-		::KillTimer(hWnd, 0);
+		::KillTimer(hWnd, 1);
 		::PostQuitMessage(0);
 		return 0;
 	}
@@ -70,7 +83,11 @@ public :
 
 		::DrawText(hMemDC, _T("Hello World"), -1, &rcClient, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
-		one.Draw(hMemDC);
+		marble::iterator it;
+		for (it = depot.begin(); it != depot.end(); it++)
+		{
+			(*it)->Draw(hMemDC);
+		}
 
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
@@ -82,7 +99,11 @@ public :
 	{
 		if (update_dt > 50)
 		{
-			one.Update();
+			marble::iterator it;
+			for (it = depot.begin(); it != depot.end(); it++)
+			{
+				(*it)->Update();
+			}
 
 			update_dt -= 50;
 		}
@@ -100,7 +121,7 @@ private :
 	HBITMAP hMemBitmap;
 	Rect rcClient;
 	HBRUSH hBgBrush;
-	Circle one;
 
 	DWORD update_dt;
+	marble depot;
 };
