@@ -6,29 +6,6 @@
 #include "BaseType.h"
 #include "utility.h"
 
-template<typename ReturnType, typename Class, typename FunctionPointer>
-class Callable
-{
-public :
-	Callable(FunctionPointer a):func(a){}
-
-	template<typename Derived,
-			typename Arg1, 
-			typename Arg2, 
-			typename Arg3, 
-			typename Arg4>
-	ReturnType operator ()(Derived* pObj, Arg1 a1, Arg2 a2, Arg3 a3, Arg4 a4)
-	{
-		return (get_pointer(pObj)->*func)(a1, a2, a3, a4);
-	}
-	template<typename Derived>
-	Class* get_pointer(Derived* obj)
-	{
-		return dynamic_cast<Class*>(obj);
-	}
-private :
-	FunctionPointer func;
-};
 
 template<typename T>
 class MainWindow

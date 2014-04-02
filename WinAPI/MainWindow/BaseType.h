@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-
+#include <cmath>
 struct Point;
 struct Rect;
 struct Size;
@@ -12,6 +12,14 @@ struct Point : public POINT
 	{
 		x = _x;
 		y = _y;
+	}
+	Point operator - (const Point& o)
+	{
+		return Point(x-o.x, y-o.y);
+	}
+	float operator ^ (const Point& o)
+	{
+		return sqrt(float((x-o.x)*(x-o.x) + (y-o.y)*(y-o.y)));
 	}
 };
 
@@ -60,6 +68,7 @@ struct Rect : public RECT
 	{
 		return (bottom - top);
 	}
+	// OffsetRect
 	Rect operator << (const Size& diff)
 	{
 		return Rect(left - diff.cx, top - diff.cy,
@@ -69,6 +78,17 @@ struct Rect : public RECT
 	{
 		return Rect(left + diff.cx, top + diff.cy,
 			right + diff.cx, bottom + diff.cy);
+	}
+	// InflateRect
+	Rect operator + (const Size& diff)
+	{
+		return Rect(left - diff.cx, top - diff.cy,
+			right + diff.cx, bottom + diff.cy);
+	}
+	Rect operator - (const Size& diff)
+	{
+		return Rect(left + diff.cx, top + diff.cy,
+			right - diff.cx, bottom - diff.cy);
 	}
 };
 

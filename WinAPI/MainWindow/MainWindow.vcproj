@@ -193,7 +193,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\utility.h"
+				RelativePath=".\sga.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Utility.h"
 				>
 			</File>
 		</Filter>
