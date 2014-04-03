@@ -37,26 +37,40 @@ protected :
 	{
 		::GetClientRect(hWnd, &rcClient);
 
+		//////////////////////////////////////////
+		// double buffering...
 		hMainDC = ::GetDC(hWnd);
 		hMemDC = ::CreateCompatibleDC(hMainDC);
 		hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
 		::SelectObject(hMemDC, hMemBitmap);
 
-		hBgBrush = ::CreateSolidBrush(RGB(0xE6,0xE6,0xFA));
+		hBgBrush = ::CreateSolidBrush(RGB(0,0,0));
+
+		//////////////////////////////////////////
+		// bitmap loading...
+		hBitmapDC = ::CreateCompatibleDC(hMemDC);
+		hImage = (HBITMAP)::LoadImage(NULL, _T("circle.bmp"), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION);
+		::SelectObject(hBitmapDC, hImage);
+
+		BITMAP bm;
+		::GetObject(hImage, sizeof(BITMAP), &bm);
+
+		cBitmap.cx = bm.bmWidth;
+		cBitmap.cy = bm.bmHeight;
 
 		// 글자 출력시 바탕 투명 처리.
 		::SetBkMode(hMemDC, TRANSPARENT);
 
 		////////////////////////////////////
 		// circle init
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			depot.push_back(new Circle(Point(50 + rand()%400, 50 + rand()%300),
 									   15 + rand()%10,
 									   RGB(255, 50 + rand()%200, 100 + rand()%150)));
 		}
 
-		MouseCircle.SetData(Point(0,0), 50);
+		MouseCircle.SetData(Point(0,0), cBitmap.cx/2);
 		MouseCircle.SetColor(RGB(255,255,255));
 
 		::SetTimer(hWnd, 1, 100, NULL);
@@ -70,6 +84,11 @@ protected :
 			delete (*it);
 			it = depot.erase(it);
 		}
+
+		/////////////////////////////////
+		// release bitmap
+		::DeleteObject(hImage);
+		::DeleteDC(hBitmapDC);
 
 		::DeleteObject(hBgBrush);
 
@@ -102,7 +121,13 @@ public :
 			(*it)->Draw(hMemDC);
 		}
 
-		MouseCircle.Draw(hMemDC);
+		// msimg32.lib
+		//::TransparentBlt();
+		::GdiTransparentBlt(hMemDC, ptMouse.x - cBitmap.cx/2, ptMouse.y - cBitmap.cy/2, cBitmap.cx, cBitmap.cy,
+			hBitmapDC, 0, 0, cBitmap.cx, cBitmap.cy, RGB(255,255,255));
+		//::BitBlt(hMemDC, ptMouse.x - cBitmap.cx/2, ptMouse.y - cBitmap.cy/2, cBitmap.cx, cBitmap.cy,
+		//	hBitmapDC, 0, 0, SRCCOPY);
+		//MouseCircle.Draw(hMemDC);
 
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
@@ -114,7 +139,7 @@ public :
 	{
 		MouseCircle << ptMouse;
 
-		if (update_dt > 50)
+		if (update_dt > 100)
 		{
 			marble::iterator it;
 			for (it = depot.begin(); it != depot.end(); it++)
@@ -122,7 +147,7 @@ public :
 				(*it)->Update(&MouseCircle);
 			}
 
-			update_dt -= 50;
+			update_dt -= 100;
 		}
 		update_dt += tick;
 		//Invalidate();
@@ -139,6 +164,12 @@ private :
 	HBITMAP hMemBitmap;
 	Rect rcClient;
 	HBRUSH hBgBrush;
+
+	////////////////////////////////
+	// for Bitmap Load
+	HDC hBitmapDC;
+	HBITMAP hImage;
+	Size cBitmap;
 
 	DWORD update_dt;
 	marble depot;
