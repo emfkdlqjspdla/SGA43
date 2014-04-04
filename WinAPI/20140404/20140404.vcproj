@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DoubleBuffer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TransparentApp.h"
 				>
 			</File>

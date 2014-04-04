@@ -5,6 +5,7 @@
 #include <list>
 #include <cstdlib>
 #include <windowsx.h>
+#include "DoubleBuffer.h"
 
 class TransparentApp : public MainWindow<TransparentApp>
 {
@@ -13,7 +14,7 @@ class TransparentApp : public MainWindow<TransparentApp>
 	typedef std::list<Circle*> marble;
 public :
 	TransparentApp()
-		: update_dt(0)
+		: update_dt(0), red(0)
 	{
 		SetWindowTitle(_T("Transparent Bitmap Sample"));
 	}
@@ -41,20 +42,22 @@ protected :
 
 		//////////////////////////////////////
 		// for double buffering...
-		hMainDC = ::GetDC(hWnd);
-		hMemDC = ::CreateCompatibleDC(hMainDC);
-		hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
-		::SelectObject(hMemDC, hMemBitmap);
+		//hMainDC = ::GetDC(hWnd);
+		//hMemDC = ::CreateCompatibleDC(hMainDC);
+		//hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
+		//::SelectObject(hMemDC, hMemBitmap);
+		backbuffer.Attach(hWnd);
 		// for double buffering...
 		//////////////////////////////////////
 
 		bgColor = ::CreateSolidBrush(RGB(255,200,200));
 
+		const int size = 64;
 		for (int i = 0; i < 50; i++)
 		{
 			Circle* pCircle = new Circle(Point(50 + rand()%400, 50 + rand()%300), 50);
-			pCircle->SetImage(_T("circle_group.bmp"), Rect((i%7)*100, 0, 100 + (i%7)*100, 100));
-			pCircle->SetTransparentColor(RGB(255,255,255));
+			pCircle->SetImage(_T("explosion.bmp"), Rect((i%7)*size, 0, size + (i%7)*size, size));
+			pCircle->SetTransparentColor(RGB(255,0,255));
 			depot.push_back(pCircle);
 		}
 
@@ -77,9 +80,10 @@ protected :
 
 		//////////////////////////////////////
 		// for double buffering...
-		::DeleteObject(hMemBitmap);
-		::DeleteDC(hMemDC);
-		::ReleaseDC(hWnd, hMainDC);
+		backbuffer.Detach();
+		//::DeleteObject(hMemBitmap);
+		//::DeleteDC(hMemDC);
+		//::ReleaseDC(hWnd, hMainDC);
 		// for double buffering...
 		//////////////////////////////////////
 
@@ -94,30 +98,31 @@ public :
 		//PAINTSTRUCT ps;
 		//HDC hdc = ::BeginPaint(hWnd, &ps);
 
-		::FillRect(hMemDC, &rcClient, bgColor);
+		backbuffer << RGB(red,255,255);
 
-		SYSTEMTIME st;
+		//::FillRect(backbuffer, &rcClient, bgColor);
 
-		::GetLocalTime(&st);
+		//SYSTEMTIME st;
 
-		TCHAR szTime[100];
+		//::GetLocalTime(&st);
 
-		_stprintf_s(szTime, _T("%02d:%02d:%02d"), st.wHour, st.wMinute, st.wSecond);
+		//TCHAR szTime[100];
 
-		::DrawText(hMemDC, szTime, -1, &rcClient, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		//_stprintf_s(szTime, _T("%02d:%02d:%02d"), st.wHour, st.wMinute, st.wSecond);
+
+		//::DrawText(backbuffer, szTime, -1, &rcClient, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 
 		marble::iterator it;
 		for (it = depot.begin(); it != depot.end(); it++)
 		{
-			(*it)->Draw(hMemDC);
+			(*it)->Draw(backbuffer);
 		}
 
+		MouseCircle.Draw(backbuffer);
 
-		MouseCircle.Draw(hMemDC);
-
-
-		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(),
-			hMemDC, 0, 0, SRCCOPY);
+		backbuffer.Draw();
+		//::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(),
+		//	backbuffer, 0, 0, SRCCOPY);
 
 		//::EndPaint(hWnd, &ps);
 		//return 0;
@@ -136,6 +141,10 @@ public :
 				(*it)->Update(&MouseCircle);
 			}
 
+			red += 10;
+			if (red > 255)
+				red = 0;
+
 			update_dt -= 50;
 		}
 
@@ -149,6 +158,8 @@ private :
 	Rect rcClient;
 
 	// for double buffering...
+	DoubleBuffer backbuffer;
+
 	HDC hMainDC;
 	HDC hMemDC;
 	HBITMAP hMemBitmap;
@@ -159,4 +170,6 @@ private :
 	Point ptMouse;
 
 	DWORD update_dt;
+
+	BYTE red;
 };
