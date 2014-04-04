@@ -29,6 +29,14 @@ public :
 
 		radius = rc.width()/2;
 	}
+	void SetRect(const Rect& rc)
+	{
+		rcImage = rc;
+	}
+	void SetRect(const std::vector<Rect>& rclist)
+	{
+		animation = rclist;
+	}
 	void SetTransparentColor(COLORREF clr)
 	{
 		bUseTransparent = TRUE;
@@ -43,24 +51,24 @@ public :
 	{
 		color = clr;
 	}
-	void Update(Circle* pObj)
-	{
-		speed += 1;
-		center.y += speed;
+	//void Update(Circle* pObj)
+	//{
+	//	speed += 1;
+	//	center.y += speed;
 
-		if (center.y >= 500)
-		{
-			speed = -speed - 1;
-		}
+	//	if (center.y >= 500)
+	//	{
+	//		speed = -speed - 1;
+	//	}
 
-		if (IsCollide(pObj))
-		{
-			if (center.x > pObj->center.x)
-				center.x += pObj->radius;
-			else
-				center.x -= pObj->radius;
-		}
-	}
+	//	if (IsCollide(pObj))
+	//	{
+	//		if (center.x > pObj->center.x)
+	//			center.x += pObj->radius;
+	//		else
+	//			center.x -= pObj->radius;
+	//	}
+	//}
 	bool IsCollide(Circle* pObj)
 	{
 		if ((center ^ pObj->center) <= float(radius + pObj->radius))
@@ -68,16 +76,36 @@ public :
 
 		return false;
 	}
+	void Update(DWORD tick)
+	{
+		// delay = 100;
+		if (update_dt > delay)
+		{
+			index++;
+			if (index>= 25)
+				index = 0;
+
+			update_dt -= delay;
+		}
+
+		update_dt += tick;
+	}
 	void Draw(HDC hdc)
 	{
 		HDC hBitmap = ::CreateCompatibleDC(hdc);
 		::SelectObject(hBitmap, hImage);
 
 		if (bUseTransparent)
+			//::GdiTransparentBlt(hdc,
+			//center.x - radius, center.y - radius, 
+			//radius*2, radius*2,
+			//hBitmap, rcImage.left, rcImage.top, 
+			//rcImage.width(), rcImage.height(), 
+			//clrTransparent);
 			::GdiTransparentBlt(hdc,
 			center.x - radius, center.y - radius, 
 			radius*2, radius*2,
-			hBitmap, rcImage.left, rcImage.top, 
+			hBitmap, animation[index].left, animation[index].top, 
 			rcImage.width(), rcImage.height(), 
 			clrTransparent);
 		else
@@ -117,5 +145,7 @@ private :
 	Rect rcImage;
 	COLORREF clrTransparent;
 	BOOL bUseTransparent;
+
+	std::vector<Rect> animation;
 };
 

@@ -3,6 +3,7 @@
 #include "..\MainWindow\MainWindow.h"
 #include "Circle.h"
 #include <list>
+#include <vector>
 #include <cstdlib>
 #include <windowsx.h>
 #include "DoubleBuffer.h"
@@ -14,7 +15,7 @@ class TransparentApp : public MainWindow<TransparentApp>
 	typedef std::list<Circle*> marble;
 public :
 	TransparentApp()
-		: update_dt(0), red(0)
+		: update_dt(0), red(0), index(0)
 	{
 		SetWindowTitle(_T("Transparent Bitmap Sample"));
 	}
@@ -53,12 +54,17 @@ protected :
 		bgColor = ::CreateSolidBrush(RGB(255,200,200));
 
 		const int size = 64;
-		for (int i = 0; i < 50; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			Circle* pCircle = new Circle(Point(50 + rand()%400, 50 + rand()%300), 50);
 			pCircle->SetImage(_T("explosion.bmp"), Rect((i%7)*size, 0, size + (i%7)*size, size));
 			pCircle->SetTransparentColor(RGB(255,0,255));
 			depot.push_back(pCircle);
+		}
+
+		for (int i = 0; i < 25; i++)
+		{
+			animation.push_back(Rect((i%5)*size, (i/5)*size, size+(i%5)*size, size+(i/5)*size));
 		}
 
 		MouseCircle.SetTransparentColor(RGB(255,255,255));
@@ -98,7 +104,7 @@ public :
 		//PAINTSTRUCT ps;
 		//HDC hdc = ::BeginPaint(hWnd, &ps);
 
-		backbuffer << RGB(red,255,255);
+		backbuffer << RGB(255,255,255);
 
 		//::FillRect(backbuffer, &rcClient, bgColor);
 
@@ -134,12 +140,16 @@ public :
 
 		if (update_dt > 50)
 		{
-
 			marble::iterator it;
 			for (it = depot.begin(); it != depot.end(); it++)
 			{
-				(*it)->Update(&MouseCircle);
+				(*it)->SetRect(animation[index]);
+				(*it)->Update(tick);
 			}
+
+			index++;
+			if (index >= 25)
+				index = 0;
 
 			red += 10;
 			if (red > 255)
@@ -172,4 +182,6 @@ private :
 	DWORD update_dt;
 
 	BYTE red;
+	std::vector<Rect> animation;
+	int index;
 };
