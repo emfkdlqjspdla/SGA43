@@ -114,20 +114,6 @@ public :
 
 
 		::DeleteDC(hBitmap);
-
-		//HBRUSH brush = ::CreateSolidBrush(color);
-		//HBRUSH oldbrush = Select(hdc, brush);
-		//HPEN pen = ::CreatePen(PS_SOLID, 1, color);
-		//HPEN oldpen = Select(hdc, pen);
-
-		//::Ellipse(hdc, center.x - radius, center.y - radius,
-		//	center.x + radius, center.y + radius);
-
-		//Select(hdc, oldpen);
-		//::DeleteObject(pen);
-
-		//Select(hdc, oldbrush);
-		//::DeleteObject(brush);
 	}
 
 	Circle& operator << (const Point& pt)
