@@ -159,8 +159,8 @@ LRESULT CALLBACK MyWndProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		float pi = 2.f*asin(1.f);
 		float D2R = pi/180.f;
 
-		int x = cx + length*sin(theta*D2R);
-		int y = cy - length*cos(theta*D2R);
+		int x = cx + int(length*sin(theta*D2R));
+		int y = cy - int(length*cos(theta*D2R));
 		
 		// 12시간 : 360 = 1시간 : x, x = 360/12 = 30
 		// 60분 : 30 = 1분 : x, x = 30/60 = 1/2
