@@ -43,15 +43,9 @@ protected :
 
 		//////////////////////////////////////
 		// for double buffering...
-		//hMainDC = ::GetDC(hWnd);
-		//hMemDC = ::CreateCompatibleDC(hMainDC);
-		//hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
-		//::SelectObject(hMemDC, hMemBitmap);
 		backbuffer.Attach(hWnd);
 		// for double buffering...
 		//////////////////////////////////////
-
-		bgColor = ::CreateSolidBrush(RGB(255,200,200));
 
 		const int size = 64;
 		for (int i = 0; i < 1; i++)
@@ -82,14 +76,9 @@ protected :
 			delete (*it);
 		}
 
-		::DeleteObject(bgColor);
-
 		//////////////////////////////////////
 		// for double buffering...
 		backbuffer.Detach();
-		//::DeleteObject(hMemBitmap);
-		//::DeleteDC(hMemDC);
-		//::ReleaseDC(hWnd, hMainDC);
 		// for double buffering...
 		//////////////////////////////////////
 
@@ -106,18 +95,6 @@ public :
 
 		backbuffer << RGB(255,255,255);
 
-		//::FillRect(backbuffer, &rcClient, bgColor);
-
-		//SYSTEMTIME st;
-
-		//::GetLocalTime(&st);
-
-		//TCHAR szTime[100];
-
-		//_stprintf_s(szTime, _T("%02d:%02d:%02d"), st.wHour, st.wMinute, st.wSecond);
-
-		//::DrawText(backbuffer, szTime, -1, &rcClient, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
-
 		marble::iterator it;
 		for (it = depot.begin(); it != depot.end(); it++)
 		{
@@ -127,8 +104,6 @@ public :
 		MouseCircle.Draw(backbuffer);
 
 		backbuffer.Draw();
-		//::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(),
-		//	backbuffer, 0, 0, SRCCOPY);
 
 		//::EndPaint(hWnd, &ps);
 		//return 0;
@@ -169,11 +144,6 @@ private :
 
 	// for double buffering...
 	DoubleBuffer backbuffer;
-
-	HDC hMainDC;
-	HDC hMemDC;
-	HBITMAP hMemBitmap;
-	HBRUSH bgColor;
 
 	marble depot;
 	Circle MouseCircle;
