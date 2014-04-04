@@ -212,7 +212,6 @@
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
-					ExcludedFromBuild="true"
 					>
 					<Tool
 						Name="VCCLCompilerTool"
@@ -244,14 +243,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\data.dat"
-			>
-		</File>
-		<File
-			RelativePath=".\itemlist.dat"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -191,20 +191,20 @@ LRESULT CALLBACK MyWndProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		float pi = 2.f*asin(1.f);
 		float D2R = pi/180.f;
 
-		int x = cx + length*sin(theta_h*D2R);
-		int y = cy - length*cos(theta_h*D2R);
+		int x = cx + int(length*sin(theta_h*D2R));
+		int y = cy - int(length*cos(theta_h*D2R));
 
 		::MoveToEx(hdc, cx, cy, &pt);
 		::LineTo(hdc, x, y);
 
-		x = cx + length*sin(theta_m*D2R);
-		y = cy - length*cos(theta_m*D2R);
+		x = cx + int(length*sin(theta_m*D2R));
+		y = cy - int(length*cos(theta_m*D2R));
 
 		::MoveToEx(hdc, cx, cy, &pt);
 		::LineTo(hdc, x, y);
 
-		x = cx + length*sin(theta_s*D2R);
-		y = cy - length*cos(theta_s*D2R);
+		x = cx + int(length*sin(theta_s*D2R));
+		y = cy - int(length*cos(theta_s*D2R));
 
 		::MoveToEx(hdc, cx, cy, &pt);
 		::LineTo(hdc, x, y);
@@ -260,14 +260,14 @@ LRESULT CALLBACK MyWndProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 		// 12h : 360 = 1h : x, x = 360*1/12 = 30
 		// 60m : 30 = 1m : x, x = 30*1/60 = 1/2
 		// 60s : 1/2 = 1s : x, x = (1/2)/60 = 1/120
-		theta_h = (st.wHour%12)*30 + (st.wMinute)/2 + (st.wSecond)/120;
+		theta_h = (st.wHour%12)*30.f + (st.wMinute)/2.f + (st.wSecond)/120.f;
 
 		// 60m : 360 = 1m : x, x = 360*1/60 = 6
 		// 60s : 6 = 1s : x, x = 6*1/60 = 1/10
-		theta_m = (st.wMinute)*6 + (st.wSecond)/10;
+		theta_m = (st.wMinute)*6.f + (st.wSecond)/10.f;
 
 		// 60s : 360 = 1s : x, x = 360*1/60 = 6
-		theta_s = (st.wSecond)*6;
+		theta_s = (st.wSecond)*6.f;
 
 		if (st.wSecond == 0)
 		{
@@ -305,8 +305,6 @@ LRESULT CALLBACK MyWndProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	}
 	else if (uMsg == WM_LBUTTONDOWN)
 	{
-
-		HFONT hFont;
 	}
 
 	return ::DefWindowProc(hWnd,uMsg,wParam,lParam);
