@@ -6,36 +6,18 @@ class Image
 {
 public :
 	Image()
-		: hMainDC(NULL)
-		, hBitmapDC(NULL)
-		, hBitmap(NULL)
+		: hBitmap(NULL)
 		, clrTransparent(RGB(0,0,0))
 		, bUseTransparent(false)
 	{
 	}
 	~Image()
 	{
-		Detach();
+		if (hBitmap)
+			::DeleteObject(hBitmap);
 	}
 
 public :
-	BOOL Attach(HWND hWnd)
-	{
-		if (!hWnd) return FALSE;
-
-		hOwner = hWnd;
-		hMainDC = ::GetDC(hWnd);
-		hBitmapDC = ::CreateCompatibleDC(hMainDC);
-		hOldBitmap = Select(hBitmapDC, hBitmap);
-
-		return TRUE;
-	}
-	void Detach()
-	{
-		::SelectObject(hBitmapDC, hOldBitmap);
-		::DeleteDC(hBitmapDC);
-		::ReleaseDC(hOwner, hMainDC);
-	}
 	BOOL load(LPCTSTR szFileName, const Rect& rc)
 	{
 		hBitmap = (HBITMAP)::LoadImage(NULL, szFileName, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_SHARED);
@@ -46,25 +28,11 @@ public :
 
 		return TRUE;
 	}
-	void Draw(const Rect& rcDest, DWORD rop = SRCCOPY)
-	{
-		if (bUseTransparent)
-		{
-			::GdiTransparentBlt(hMainDC, rcDest.left, rcDest.top,
-				rcDest.width(), rcDest.height(), 
-				hBitmapDC, rcBitmap.left, rcBitmap.top,
-				rcBitmap.width(), rcBitmap.height(),
-				clrTransparent);
-		}
-		else
-		{
-			::BitBlt(hMainDC, rcDest.left, rcDest.top,
-				rcDest.width(), rcDest.height(), 
-				hBitmapDC, rcBitmap.left, rcBitmap.top, rop);
-		}
-	}
 	void Draw(HDC hdc, const Rect& rcDest, DWORD rop = SRCCOPY)
 	{
+		HDC hBitmapDC = ::CreateCompatibleDC(hdc);
+		HBITMAP hOldBitmap = Select(hBitmapDC, hBitmap);
+
 		if (bUseTransparent)
 		{
 			::GdiTransparentBlt(hdc, rcDest.left, rcDest.top,
@@ -79,6 +47,8 @@ public :
 				rcDest.width(), rcDest.height(), 
 				hBitmapDC, rcBitmap.left, rcBitmap.top, rop);
 		}
+		Select(hBitmapDC, hOldBitmap);
+		::DeleteDC(hBitmapDC);
 	}
 	void SetTransparent(COLORREF clr)
 	{
@@ -93,11 +63,7 @@ public :
 
 
 private :
-	HWND hOwner;
-	HDC hMainDC;
-	HDC hBitmapDC;
 	HBITMAP hBitmap;
-	HBITMAP hOldBitmap;
 	Rect rcBitmap;
 
 	COLORREF clrTransparent;

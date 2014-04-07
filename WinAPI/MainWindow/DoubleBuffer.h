@@ -30,12 +30,15 @@ public :
 		hMainDC = ::GetDC(hMainWnd);
 		hMemDC = ::CreateCompatibleDC(hMainDC);
 		hMemBitmap = ::CreateCompatibleBitmap(hMainDC, rcClient.width(), rcClient.height());
-		::SelectObject(hMemDC, hMemBitmap);
+		hOldMemBitmap = Select(hMemDC, hMemBitmap);
 	}
 	void Detach()
 	{
 		if (hMemBitmap)
+		{
+			Select(hMemDC, hOldMemBitmap);
 			::DeleteObject(hMemBitmap);
+		}
 		if (hMemDC)
 			::DeleteDC(hMemDC);
 		if (hMainDC)
@@ -68,5 +71,6 @@ private :
 	HDC hMainDC;
 	HDC hMemDC;
 	HBITMAP hMemBitmap;
+	HBITMAP hOldMemBitmap;
 	Rect rcClient;
 };

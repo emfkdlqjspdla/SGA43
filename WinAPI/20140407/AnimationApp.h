@@ -81,7 +81,6 @@ protected :
 		{
 			Image* pImage = new Image();
 			pImage->load(_T("explosion.bmp"), Rect(size*(i%5), size*(i/5), size + size*(i%5), size + size*(i/5)));
-			pImage->Attach(hMainWnd);
 			pAnimation->AddImage(pImage);
 		}
 
@@ -102,7 +101,6 @@ protected :
 	{
 		hMainWnd = hWnd;
 		test.load(_T("circle.bmp"), Rect(0,0,100,100));
-		test.Attach(hWnd);
 		test.SetTransparent(RGB(255,0,255));
 
 		const int size = 64;
@@ -110,7 +108,6 @@ protected :
 		{
 			Image* pImage = new Image();
 			pImage->load(_T("explosion.bmp"), Rect(size*(i%5), size*(i/5), size + size*(i%5), size + size*(i/5)));
-			pImage->Attach(hWnd);
 			explosion.AddImage(pImage);
 		}
 
