@@ -45,6 +45,13 @@ struct Rect : public RECT
 		right = r;
 		bottom = b;
 	}
+	Rect(const Point& c, const Size& s)
+	{
+		left = c.x - s.cx/2;
+		top = c.y - s.cy/2;
+		right = left + s.cx;
+		bottom = top + s.cy;
+	}
 	Rect(const Point& lt, const Point& rb)
 	{
 		left = lt.x;
