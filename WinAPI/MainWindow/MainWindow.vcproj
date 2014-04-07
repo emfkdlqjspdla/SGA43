@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DoubleBuffer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainWindow.h"
 				>
 			</File>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "..\MainWindow\sga.hpp"
+#include "BaseType.h"
 
 class DoubleBuffer
 {

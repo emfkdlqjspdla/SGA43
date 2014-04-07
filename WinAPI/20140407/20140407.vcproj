@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="20140404"
-	ProjectGUID="{27F48AD9-213C-46AF-9772-B78526E082DA}"
-	RootNamespace="My20140404"
+	Name="20140407"
+	ProjectGUID="{4393211E-1592-4C53-8DEE-BCB8703A2DB5}"
+	RootNamespace="My20140407"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -171,7 +171,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\winmain_bitmap_transparent.cpp"
+				RelativePath=".\winmain_animation.cpp"
 				>
 			</File>
 		</Filter>
@@ -181,11 +181,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\Circle.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TransparentApp.h"
+				RelativePath=".\AnimationApp.h"
 				>
 			</File>
 		</Filter>

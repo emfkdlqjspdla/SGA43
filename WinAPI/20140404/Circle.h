@@ -4,6 +4,7 @@
 #include "..\MainWindow\sga.hpp"
 
 #include <list>
+#include <vector>
 
 class Circle
 {
@@ -133,5 +134,8 @@ private :
 	BOOL bUseTransparent;
 
 	std::vector<Rect> animation;
+	DWORD update_dt;
+	DWORD delay;
+	int index;
 };
 

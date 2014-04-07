@@ -1,12 +1,11 @@
 #pragma once
 
-#include "..\MainWindow\MainWindow.h"
+#include "..\MainWindow\sga.hpp"
 #include "Circle.h"
 #include <list>
 #include <vector>
 #include <cstdlib>
 #include <windowsx.h>
-#include "DoubleBuffer.h"
 
 class TransparentApp : public MainWindow<TransparentApp>
 {

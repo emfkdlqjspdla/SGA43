@@ -8,5 +8,6 @@
 #include "BaseType.h"
 #include "utility.h"
 #include "MainWindow.h"
+#include "DoubleBuffer.h"
 
 #endif // __SGA_HPP__
