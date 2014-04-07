@@ -134,5 +134,8 @@ private :
 	BOOL bUseTransparent;
 
 	std::vector<Rect> animation;
+	DWORD update_dt;
+	DWORD delay;
+	int index;
 };
 

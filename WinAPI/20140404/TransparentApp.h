@@ -1,7 +1,6 @@
 #pragma once
 
-#include "..\MainWindow\MainWindow.h"
-#include "DoubleBuffer.h"
+#include "..\MainWindow\sga.hpp"
 #include "Circle.h"
 #include <list>
 #include <vector>
