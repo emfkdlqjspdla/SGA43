@@ -24,8 +24,8 @@ _tWinMain(HINSTANCE hInst,
 		if (msg.message == WM_QUIT)
 			break;
 
-		app.Update(dt);
-		app.Render(dt);
+		//app.Update(dt);
+		//app.Render(dt);
 
 		dt = ::GetTickCount() - st;
 		st = ::GetTickCount();

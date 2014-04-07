@@ -1,12 +1,12 @@
 #pragma once
 
 #include "..\MainWindow\MainWindow.h"
+#include "DoubleBuffer.h"
 #include "Circle.h"
 #include <list>
 #include <vector>
 #include <cstdlib>
 #include <windowsx.h>
-#include "DoubleBuffer.h"
 
 class TransparentApp : public MainWindow<TransparentApp>
 {
@@ -25,8 +25,8 @@ protected :
 	{
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
-		//AddEventHandler(WM_PAINT, &Me::OnPaint);
-		//AddEventHandler(WM_TIMER, &Me::OnTimer);
+		AddEventHandler(WM_PAINT, &Me::OnPaint);
+		AddEventHandler(WM_TIMER, &Me::OnTimer);
 		AddEventHandler(WM_MOUSEMOVE, &Me::OnMouseMove);
 	}
 	LRESULT OnMouseMove(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -65,7 +65,7 @@ protected :
 		MouseCircle.SetData(Point(0,0), 10);
 		MouseCircle.SetImage(_T("circle.bmp"), Rect(0,0,100,100));
 
-		::SetTimer(hWnd, 0, 100, NULL);
+		::SetTimer(hWnd, 0, 50, NULL);
 		return 0;
 	}
 	LRESULT OnDestroy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -86,12 +86,11 @@ protected :
 		::PostQuitMessage(0);
 		return 0;
 	}
-public :
-	//LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	void Render(DWORD tick)
+	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//void Render(DWORD tick)
 	{
-		//PAINTSTRUCT ps;
-		//HDC hdc = ::BeginPaint(hWnd, &ps);
+		PAINTSTRUCT ps;
+		HDC hdc = ::BeginPaint(hWnd, &ps);
 
 		backbuffer << RGB(255,255,255);
 
@@ -105,38 +104,27 @@ public :
 
 		backbuffer.Draw();
 
-		//::EndPaint(hWnd, &ps);
-		//return 0;
+		::EndPaint(hWnd, &ps);
+		return 0;
 	}
-	//LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	void Update(DWORD tick)
+	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//void Update(DWORD tick)
 	{
 		MouseCircle << ptMouse;
 
-		if (update_dt > 50)
+		marble::iterator it;
+		for (it = depot.begin(); it != depot.end(); it++)
 		{
-			marble::iterator it;
-			for (it = depot.begin(); it != depot.end(); it++)
-			{
-				(*it)->SetRect(animation[index]);
-				(*it)->Update(tick);
-			}
-
-			index++;
-			if (index >= 25)
-				index = 0;
-
-			red += 10;
-			if (red > 255)
-				red = 0;
-
-			update_dt -= 50;
+			(*it)->SetRect(animation[index]);
+			(*it)->Update(&MouseCircle);
 		}
 
-		update_dt += tick;
+		index++;
+		if (index >= 25)
+			index = 0;
 
-		//Invalidate();
-		//return 0;
+		Invalidate();
+		return 0;
 	}
 
 private :
