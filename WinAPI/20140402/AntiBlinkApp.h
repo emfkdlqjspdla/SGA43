@@ -15,7 +15,7 @@ public :
 	AntiBlinkApp()
 		: update_dt(0)
 	{
-		//SetWindowTitle(_T("Anti Blink Sample"));
+		SetWindowTitle(_T("Anti Blink Sample"));
 	}
 
 protected :
@@ -23,8 +23,8 @@ protected :
 	{
 		AddEventHandler(WM_CREATE, &Me::OnCreate);
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
-		//AddEventHandler(WM_PAINT, &Me::OnPaint);
-		//AddEventHandler(WM_TIMER, &Me::OnTimer);
+		AddEventHandler(WM_PAINT, &Me::OnPaint);
+		AddEventHandler(WM_TIMER, &Me::OnTimer);
 		AddEventHandler(WM_MOUSEMOVE, &Me::OnMouseMove);
 		AddEventHandler(WM_ERASEBKGND, &Me::OnEraseBkgnd);
 	}
@@ -106,9 +106,9 @@ protected :
 		ptMouse.y = GET_Y_LPARAM(lParam);
 		return 0;
 	}
-public :
-//	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	void Render(DWORD tick)
+//public :
+	LRESULT OnPaint(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//void Render(DWORD tick)
 	{
 		// background
 		::FillRect(hMemDC, &rcClient, hBgBrush);
@@ -131,29 +131,29 @@ public :
 
 		::BitBlt(hMainDC, 0, 0, rcClient.width(), rcClient.height(), hMemDC, 0, 0, SRCCOPY);
 
-		//return 0;
+		return 0;
 	}
 
-//	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-	void Update(DWORD tick)
+	LRESULT OnTimer(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	//void Update(DWORD tick)
 	{
 		MouseCircle << ptMouse;
 
-		if (update_dt > 100)
-		{
+		//if (update_dt > 100)
+		//{
 			marble::iterator it;
 			for (it = depot.begin(); it != depot.end(); it++)
 			{
 				(*it)->Update(&MouseCircle);
 			}
 
-			update_dt -= 100;
-		}
-		update_dt += tick;
-		//Invalidate();
+		//	update_dt -= 100;
+		//}
+		//update_dt += tick;
+		Invalidate();
 
 
-		//return 0;
+		return 0;
 	}
 
 private :
