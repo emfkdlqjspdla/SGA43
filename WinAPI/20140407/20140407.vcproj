@@ -189,6 +189,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Circle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\image.h"
 				>
 			</File>
