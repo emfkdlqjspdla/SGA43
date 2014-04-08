@@ -1,8 +1,6 @@
 #pragma once
 
 #include "..\MainWindow\sga.hpp"
-#include "image.h"
-#include "animation.h"
 #include "Circle.h"
 #include <windowsx.h>
 #include <list>

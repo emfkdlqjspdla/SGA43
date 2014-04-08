@@ -13,8 +13,7 @@ public :
 	}
 	~Image()
 	{
-		if (hBitmap)
-			::DeleteObject(hBitmap);
+		release();
 	}
 
 public :
@@ -27,6 +26,11 @@ public :
 		rcBitmap = rc;
 
 		return TRUE;
+	}
+	void release()
+	{
+		if (hBitmap)
+			::DeleteObject(hBitmap);
 	}
 	void Draw(HDC hdc, const Rect& rcDest, DWORD rop = SRCCOPY)
 	{
@@ -60,7 +64,10 @@ public :
 		return rcBitmap;
 	}
 
-
+	operator HBITMAP ()
+	{
+		return hBitmap;
+	}
 
 private :
 	HBITMAP hBitmap;

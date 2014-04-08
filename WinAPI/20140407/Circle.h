@@ -2,7 +2,6 @@
 
 #include <windows.h>
 #include "..\MainWindow\sga.hpp"
-#include "image.h"
 #include <list>
 
 enum msg_id

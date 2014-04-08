@@ -9,5 +9,7 @@
 #include "utility.h"
 #include "MainWindow.h"
 #include "DoubleBuffer.h"
+#include "image.h"
+#include "animation.h"
 
 #endif // __SGA_HPP__
