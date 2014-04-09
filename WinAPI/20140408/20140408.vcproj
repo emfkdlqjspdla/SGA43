@@ -185,6 +185,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\button.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Input.h"
 				>
 			</File>

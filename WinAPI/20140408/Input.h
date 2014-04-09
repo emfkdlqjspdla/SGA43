@@ -2,6 +2,7 @@
 
 #include "..\MainWindow\sga.hpp"
 #include <bitset>
+#include <windowsx.h>
 
 class InputProcessor : public singleton<InputProcessor>
 {
@@ -22,16 +23,22 @@ public :
 		::GetKeyboardState(ckey);
 
 		_check();
-	}
 
+		DWORD dwPoint = ::GetMessagePos();
+		ptMouse.x = GET_X_LPARAM(dwPoint);
+		ptMouse.y = GET_Y_LPARAM(dwPoint);
+	}
 	bool operator [] (const int& vkey)
 	{
 		return ((ckey[vkey] & 0x80) == 0x80);
 	}
-
 	bool OnClick(const int& vkey)
 	{
 		return _OnClick[vkey];
+	}
+	Point getPos()
+	{
+		return ptMouse;
 	}
 
 private :
@@ -55,6 +62,8 @@ private :
 	BYTE pkey[count];
 
 	std::bitset<count> _OnClick;
+
+	Point ptMouse;
 };
 
 #define InputDevice InputProcessor::getReference()

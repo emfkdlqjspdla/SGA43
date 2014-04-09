@@ -27,6 +27,18 @@ struct Point : public POINT
 	{
 		return sqrt(float((x-o.x)*(x-o.x) + (y-o.y)*(y-o.y)));
 	}
+	Point ToScreen(HWND hWnd)
+	{
+		Point tmp(*this);
+		::ClientToScreen(hWnd, &tmp);
+		return tmp;
+	}
+	Point ToClient(HWND hWnd)
+	{
+		Point tmp(*this);
+		::ScreenToClient(hWnd, &tmp);
+		return tmp;
+	}
 };
 
 struct Size : public SIZE

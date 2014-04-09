@@ -2,6 +2,7 @@
 
 #include "..\MainWindow\sga.hpp"
 #include "Input.h"
+#include "button.h"
 
 class AlphaApp : public MainWindow<AlphaApp>
 {
@@ -20,7 +21,7 @@ public :
 		, FPS_dt(0), FPS_frame(0)
 	{
 		//SetWindowTitle(_T("Alphablend Sample"));
-		SetWindowSize(640, 480);
+		SetWindowSize(800, 600);
 		SetWindowStyle(WS_POPUP | WS_VISIBLE);
 	}
 	void Input(DWORD tick)
@@ -31,6 +32,15 @@ public :
 				mode = INGAME_MODE;
 			else
 				mode = CONTROL_MODE;
+		}
+
+		if (mode == CONTROL_MODE)
+		{
+			btnMini.Update(tick);
+			btnClose.Update(tick);
+
+			ptPrev = ptMouse;
+			ptMouse = InputDevice.getPos();
 		}
 	}
 	void Update(DWORD tick)
@@ -65,6 +75,9 @@ public :
 							0, 0, rcClient.width(), rcClient.height(),
 							hBitmapDC, 
 							0, 0, 10, 10, bf);
+
+			btnMini.Draw(buffer);
+			btnClose.Draw(buffer);
 		}
 
 		TCHAR szDebug[200];
@@ -72,6 +85,11 @@ public :
 		::DrawText(buffer, szDebug, -1, &rcClient, DT_LEFT | DT_TOP);
 
 		buffer.Draw();
+	}
+
+	static void Proxy(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+	{
+		::SendMessage(hWnd, uMsg, wParam, lParam);
 	}
 
 protected :
@@ -93,8 +111,20 @@ protected :
 		Select(hBitmapDC, HBITMAP(gray));
 
 
+		btnMini.Attach(hWnd);
+		btnMini.SetImageOn(_T("button2.bmp"), Rect(50,0,100,50));
+		btnMini.SetImageOff(_T("button2.bmp"), Rect(0,0,50,50));
+		btnMini.SetTransparent(RGB(255,0,255));
+		btnMini.SetButtonRect(Rect(800 - 50*2, 0, 800 - 50, 50));
+		btnMini.SetAction(&AlphaApp::Proxy, hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
 
 
+		btnClose.Attach(hWnd);
+		btnClose.SetImageOn(_T("button2.bmp"), Rect(150,0,200,50));
+		btnClose.SetImageOff(_T("button2.bmp"), Rect(100,0,150,50));
+		btnClose.SetTransparent(RGB(255,0,255));
+		btnClose.SetButtonRect(Rect(800 - 50, 0, 800, 50));
+		btnClose.SetAction(&AlphaApp::Proxy, hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
 
 		buffer.Attach(hWnd);
 		return 0;
@@ -128,4 +158,9 @@ private :
 	DWORD FPS_frame;
 	DWORD dwFPS;
 
+	Button btnMini;
+	Button btnClose;
+
+	Point ptPrev;
+	Point ptMouse;
 };
