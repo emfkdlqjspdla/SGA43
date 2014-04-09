@@ -1,4 +1,4 @@
-#include "AlphaApp.h"
+﻿#include "AlphaApp.h"
 
 INT
 WINAPI

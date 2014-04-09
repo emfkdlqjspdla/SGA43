@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef __SGA_HPP__
 #define __SGA_HPP__

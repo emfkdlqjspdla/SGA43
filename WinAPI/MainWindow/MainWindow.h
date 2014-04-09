@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <windows.h>
 #include <tchar.h>
@@ -96,7 +96,7 @@ protected :
 	{
 		AddEventHandler(WM_DESTROY, &Me::OnDestroy);
 	}
-	// »õ·Î¿î ÀÌº¥Æ® Ã³¸®±â µî·Ï.
+	// ìƒˆë¡œìš´ ì´ë²¤íŠ¸ ì²˜ë¦¬ê¸° ë“±ë¡.
 	void AddEventHandler(UINT msg, Action act)
 	{
 		Handler it = eventmap.find(msg);

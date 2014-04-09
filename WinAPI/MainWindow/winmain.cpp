@@ -1,4 +1,4 @@
-#include "ClockApp.h"
+﻿#include "ClockApp.h"
 
 INT
 WINAPI

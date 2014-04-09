@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "..\MainWindow\sga.hpp"
 
@@ -23,7 +23,7 @@ public :
 		bf.BlendOp =  AC_SRC_OVER;
 		bf.BlendFlags = 0;
 		bf.AlphaFormat = 0;
-		bf.SourceConstantAlpha = 200;
+		bf.SourceConstantAlpha = 200;	// 0(완전투명:transparent) ~ 255(완전불투명:opaque)
 
 		::GdiAlphaBlend(HDC(buffer), 0, 0, rcClient.width(), rcClient.height(),
 			hBitmapDC, 0, 0, 10, 10, bf);
