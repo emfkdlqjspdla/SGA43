@@ -184,6 +184,10 @@
 				RelativePath=".\AlphaApp.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Input.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="리소스 파일"

@@ -17,6 +17,8 @@ class MainWindow
 public :
 	MainWindow()
 		: lpszWindowTitle(NULL)
+		, dwStyle(WS_OVERLAPPEDWINDOW)
+		, width(500), height(500)
 	{
 	}
 	~MainWindow()
@@ -61,11 +63,11 @@ public :
 
 		hMainWnd = ::CreateWindowEx(0, lpClassName,
 			((lpszWindowTitle)? lpszWindowTitle : _T("sample")),
-			WS_OVERLAPPEDWINDOW,
+			dwStyle,
 			cx,
 			cy,
-			500,
-			500,
+			width,
+			height,
 			0,
 			0,
 			hInst,
@@ -90,6 +92,15 @@ protected :
 	{
 		SafeDelete(lpszWindowTitle);
 		strAlloc(&lpszWindowTitle, szTitle);
+	}
+	void SetWindowStyle(DWORD style)
+	{
+		dwStyle = style;
+	}
+	void SetWindowSize(const int& w, const int& h)
+	{
+		width = w;
+		height = h;
 	}
 
 	virtual void SetEventMap()
@@ -169,4 +180,7 @@ protected :
 private :
 	EventMapType eventmap;
 	LPTSTR lpszWindowTitle;
+	DWORD dwStyle;
+	int width;
+	int height;
 };

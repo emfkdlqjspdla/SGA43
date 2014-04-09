@@ -24,6 +24,8 @@ _tWinMain(HINSTANCE hInst,
 		if (msg.message == WM_QUIT)
 			break;
 
+		InputDevice.Update(dt);
+
 		app.Input(dt);
 		app.Update(dt);
 		app.Render(dt);
