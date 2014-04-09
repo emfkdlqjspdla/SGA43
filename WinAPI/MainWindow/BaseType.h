@@ -2,6 +2,10 @@
 
 #include <windows.h>
 #include <cmath>
+
+// Win32 API 에서 자주 사용하는 구조체인
+// POINT, RECT, SIZE 를 좀더 사용하기 편하도록 재정의함.
+
 struct Point;
 struct Rect;
 struct Size;
@@ -13,10 +17,12 @@ struct Point : public POINT
 		x = _x;
 		y = _y;
 	}
+	// 두 위치의 차이를 반환하는 연산자
 	Point operator - (const Point& o)
 	{
 		return Point(x-o.x, y-o.y);
 	}
+	// 두 위치의 거리를 반환하는 연산자.
 	float operator ^ (const Point& o)
 	{
 		return sqrt(float((x-o.x)*(x-o.x) + (y-o.y)*(y-o.y)));
@@ -75,7 +81,7 @@ struct Rect : public RECT
 	{
 		return (bottom - top);
 	}
-	// OffsetRect
+	// OffsetRect 대용으로 쓰기 위한 연산자.
 	Rect operator << (const Size& diff)
 	{
 		return Rect(left - diff.cx, top - diff.cy,
@@ -86,7 +92,7 @@ struct Rect : public RECT
 		return Rect(left + diff.cx, top + diff.cy,
 			right + diff.cx, bottom + diff.cy);
 	}
-	// InflateRect
+	// InflateRect 대용으로 쓰기 위한 연산자.
 	Rect operator + (const Size& diff)
 	{
 		return Rect(left - diff.cx, top - diff.cy,

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+// 동적 할당한 포인터를 해제할 때 사용.
 template<typename T>
 void SafeDelete(T& pointer)
 {
@@ -10,17 +11,30 @@ void SafeDelete(T& pointer)
 	}
 }
 
+// 문자열을 복사할때 매번 dest 의 크기를 잡고 복사하기 싫어서 
+// src 의 길이를 확인하고 알아서 dest에 메모리를 확보하고 복사.
 template<typename Char>
 void strAlloc(Char** dst, const Char* src)
 {
 	int len = 0;
 	while (src[len++]);
+	
+	// 이미 dst 에 데이터가 있다면..
+	if (*dst)
+		// 지워주고.
+		SafeDelete(*dst);
 
+	// src 만큼 메모리 할당한 다음.
 	*dst = new Char[len];
 	len = 0;
+	// 하나씩 복사...
 	while ((*dst)[len++] = src[len]);
 }
 
+// 싱글톤 패턴을 템플릿으로 만든것.
+// Cls의 기본생성자,기본소멸자는 protected 이하일테니...
+// getReference 에서 생성가능하도록 하려면...
+// 상속받은 클래스에서 반드시 singleton<Cls>를 friend 해야 한다.
 template<typename Cls>
 class singleton
 {
@@ -92,6 +106,8 @@ private :
 	FunctionPointer func;
 };
 
+// SelectObject API 사용시 반환타입을 형변환해야하는데
+// 매번 하는것이 귀찮고, 에러 보는 것도 싫어서 작성.
 template<typename T>
 T Select(HDC hdc, T GDI_Object)
 {
