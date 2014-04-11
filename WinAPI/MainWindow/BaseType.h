@@ -93,6 +93,30 @@ struct Rect : public RECT
 	{
 		return (bottom - top);
 	}
+	Rect ToScreen(HWND hWnd)
+	{
+		Rect tmp(*this);
+
+		Point lt = tmp.lefttop();
+		Point rb = tmp.rightbottom();
+
+		::ClientToScreen(hWnd, &lt);
+		::ClientToScreen(hWnd, &rb);
+
+		return Rect(lt, rb);
+	}
+	Rect ToClient(HWND hWnd)
+	{
+		Rect tmp(*this);
+
+		Point lt = tmp.lefttop();
+		Point rb = tmp.rightbottom();
+
+		::ScreenToClient(hWnd, &lt);
+		::ScreenToClient(hWnd, &rb);
+
+		return Rect(lt, rb);
+	}
 	// OffsetRect 대용으로 쓰기 위한 연산자.
 	Rect operator << (const Size& diff)
 	{
