@@ -112,8 +112,6 @@ public :
 		}
 
 
-		::SetWorldTransform(
-
 		test.Draw(buffer, Rect(100,100,200,200));
 
 		if (mode == CONTROL_MODE)
